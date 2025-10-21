@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retinal Disease Detection - Clinical Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+        }
+        
+        .header {
+            background: white;
+            border-bottom: 1px solid #e8ecf1;
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .logo-text p {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+        
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+            color: #718096;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+        
+        .section {
+            margin-bottom: 48px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e8ecf1;
+        }
+        
+        .section-icon {
+            font-size: 24px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .section-header .count {
+            margin-left: auto;
+            background: #f0f4f8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #0066cc;
+            font-weight: 600;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .module-card {
+            background: white;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .module-card:hover {
+            border-color: #0066cc;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            background: #f0f4f8;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .card-title-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+        
+        .card-type {
+            display: inline-block;
+            background: #e6f0ff;
+            color: #0066cc;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-description {
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .card-footer {
+            display: flex;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f4f8;
+        }
+        
+        .tag {
+            background: #f0f4f8;
+            color: #2c5aa0;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .pipeline-diagram {
+            background: white;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .pipeline-diagram h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 20px;
+        }
+        
+        .workflow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 16px 0;
+        }
+        
+        .workflow-step {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+        
+        .workflow-arrow {
+            color: #cbd5e0;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #718096;
+            font-weight: 500;
+        }
+        
+        .output-section {
+            background: white;
+            border: 1px solid #e8ecf1;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .output-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .output-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .output-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 3px solid #0066cc;
+            font-size: 13px;
+        }
+        
+        .output-item-name {
+            font-weight: 600;
+            color: #1a202c;
+            min-width: 200px;
+        }
+        
+        .output-item-desc {
+            color: #718096;
+        }
+        
+        .documentation-note {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 32px;
+            font-size: 13px;
+            color: #0c4a6e;
+        }
+        
+        .documentation-note strong {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .main-container {
+                padding: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .header-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">RD</div>
+                <div class="logo-text">
+                    <h1>Retinal Disease Detection</h1>
+                    <p>Clinical Diagnostic System</p>
+                </div>
+            </div>
+            <div class="header-meta">
+                <span>Version 1.0</span>
+                <span>Author: Dr. Vallari Sharma</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="section">
+            <div class="pipeline-diagram">
+                <h3>Processing Pipeline</h3>
+                <div class="workflow">
+                    <div class="workflow-step">Video Input</div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">Frame Extraction</div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">Preprocessing</div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">EfficientNetB0 Analysis</div>
+                    <div class="workflow-arrow">→</div>
+                    <div class="workflow-step">Clinical Report</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">11</div>
+                <div class="stat-label">Processing Steps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Core Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Visualization Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Output Formats</div>
+            </div>
+        </div>
+
+        <!-- CORE PROCESSING -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>Core Processing Modules</h2>
+                <span class="count">6 Modules</span>
+            </div>
+            <div class="grid">
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎬</div>
+                        <div class="card-title-section">
+                            <h3>extract_frames.py</h3>
+                            <span class="card-type">Video Processing</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Extracts individual frames from fundus video files with sequential naming for batch processing and frame-by-frame analysis.</p>
+                    <div class="card-footer">
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">Video I/O</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">🔧</div>
+                        <div class="card-title-section">
+                            <h3>preprocess.py</h3>
+                            <span class="card-type">Image Processing</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Normalizes and resizes retinal images to 224×224 pixels. Converts color space from BGR to RGB and normalizes pixel values to [0,1].</p>
+                    <div class="card-footer">
+                        <span class="tag">Normalization</span>
+                        <span class="tag">Batch Processing</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title-section">
+                            <h3>predict.py</h3>
+                            <span class="card-type">Deep Learning</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Implements EfficientNetB0 transfer learning model with binary classification head for disease probability prediction on each frame.</p>
+                    <div class="card-footer">
+                        <span class="tag">TensorFlow</span>
+                        <span class="tag">Binary Classification</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title-section">
+                            <h3>results.py</h3>
+                            <span class="card-type">Clinical Analysis</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Calculates disease percentages using bounding box analysis and sigmoid activation function for probabilistic classification.</p>
+                    <div class="card-footer">
+                        <span class="tag">Statistics</span>
+                        <span class="tag">Probability</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">📐</div>
+                        <div class="card-title-section">
+                            <h3>probability.py</h3>
+                            <span class="card-type">Documentation</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Generates detailed probability calculation breakdowns with step-by-step mathematical explanations and confidence scoring methodology.</p>
+                    <div class="card-footer">
+                        <span class="tag">Math Explanation</span>
+                        <span class="tag">CSV Export</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon">🧪</div>
+                        <div class="card-title-section">
+                            <h3>test_preprocess.py</h3>
+                            <span class="card-type">Quality Assurance</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Validates image preprocessing pipeline with shape verification and dimensional accuracy checks for model compatibility.</p>
+                    <div class="card-footer">
+                        <span class="tag">Unit Testing</span>
+                        <span class="tag">Debugging</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORCHESTRATION -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2>Pipeline Orchestration</h2>
+                <span class="count">1 Module</span>
+            </div>
+            <div class="output-section">
+                <div class="output-header">master.py - Complete Workflow Automation</div>
+                <p style="font-size: 13px; color: #718096; margin-bottom: 16px;">Orchestrates the entire diagnostic pipeline across 11 sequential steps with automatic directory management and progress reporting.</p>
+                <div class="output-list">
+                    <div class="output-item">
+                        <span class="output-item-name">Step 1-2</span>
+                        <span class="output-item-desc">Extract frames and preprocess images</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">Step 3-4</span>
+                        <span class="output-item-desc">Generate predictions and GradCAM heatmaps</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">Step 5-6</span>
+                        <span class="output-item-desc">Create annotated frames and add bounding boxes</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">Step 7-8</span>
+                        <span class="output-item-desc">Plot confidence graphs and generate heatmaps</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">Step 9-11</span>
+                        <span class="output-item-desc">Create visualizations, reports, and summaries</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISUALIZATION -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon"></div>
+                <h2>Visualization & Analysis</h2>
+                <span class="count">7 Modules</span>
+            </div>
+            <div class="grid">
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>visualize_predictions.py</h3>
+                            <span class="card-type">Annotation</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Overlays prediction labels and confidence scores on retinal frames with color-coded indicators: green for Normal, red for Diseased.</p>
+                    <div class="card-footer">
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">Labeling</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>create_video.py</h3>
+                            <span class="card-type">Video Synthesis</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Assembles annotated frames into MP4 video format for temporal disease progression analysis with adjustable playback rates.</p>
+                    <div class="card-footer">
+                        <span class="tag">FFmpeg</span>
+                        <span class="tag">Video Encoding</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>bounding_box.py</h3>
+                            <span class="card-type">Anomaly Detection</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Detects retinal anomalies using contour detection, renders bounding boxes around lesions, and tracks intensity metrics across frames.</p>
+                    <div class="card-footer">
+                        <span class="tag">Contour Detection</span>
+                        <span class="tag">Matplotlib</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>final_visualize.py</h3>
+                            <span class="card-type">Heatmap Blending</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Blends GradCAM heatmaps with original frames using JET colormap with weighted transparency for enhanced anomaly visibility.</p>
+                    <div class="card-footer">
+                        <span class="tag">GradCAM</span>
+                        <span class="tag">Fusion</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>plot_confidence.py</h3>
+                            <span class="card-type">Graph Plotting</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Generates line graph visualization of disease probability across all frames with 0.5 threshold indicator for decision boundary clarity.</p>
+                    <div class="card-footer">
+                        <span class="tag">Matplotlib</span>
+                        <span class="tag">Trend Analysis</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>graph.py</h3>
+                            <span class="card-type">Decision Trees</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Creates hierarchical decision tree visualization with classification logic flowchart and frame-by-frame bar chart with risk assessment.</p>
+                    <div class="card-footer">
+                        <span class="tag">Decision Logic</span>
+                        <span class="tag">Risk Stratification</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>adv_heatmap.py</h3>
+                            <span class="card-type">Advanced Heatmap</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Generates clustered heatmap with hierarchical row/column clustering to visualize disease probability distribution patterns across all frames.</p>
+                    <div class="card-footer">
+                        <span class="tag">Seaborn</span>
+                        <span class="tag">Clustering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REPORTING -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon"></div>
+                <h2>Clinical Report Generation</h2>
+                <span class="count">2 Modules</span>
+            </div>
+            <div class="grid">
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>generate_pdf_report.py</h3>
+                            <span class="card-type">Report Generation</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Generates comprehensive clinical PDF report with diagnosis summary, follow-up test recommendations, precautions, and most abnormal frame image embedding.</p>
+                    <div class="card-footer">
+                        <span class="tag">ReportLab</span>
+                        <span class="tag">PDF</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="card-header">
+                        <div class="card-icon"></div>
+                        <div class="card-title-section">
+                            <h3>bilingual_report_reader.py</h3>
+                            <span class="card-type">Accessibility</span>
+                        </div>
+                    </div>
+                    <p class="card-description">Provides bilingual text-to-speech report reading in English and Hindi with OCR fallback for scanned document processing via Tesseract.</p>
+                    <div class="card-footer">
+                        <span class="tag">pyttsx3</span>
+                        <span class="tag">OCR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OUTPUT FILES -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon"></div>
+                <h2>Generated Output Files</h2>
+                <span class="count">8 Formats</span>
+            </div>
+            <div class="output-section">
+                <div class="output-list">
+                    <div class="output-item">
+                        <span class="output-item-name">predictions.csv</span>
+                        <span class="output-item-desc">Frame-wise disease probability and classification results</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">final_report.pdf</span>
+                        <span class="output-item-desc">Clinical diagnostic report with recommendations and precautions</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">decision_tree.png</span>
+                        <span class="output-item-desc">Classification logic flowchart and frame analysis visualization</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">retina_heatmap.png</span>
+                        <span class="output-item-desc">Clustered probability heatmap with hierarchical sorting</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">confidence_graph.png</span>
+                        <span class="output-item-desc">Disease probability trend across sequential frames</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">heatmap_intensity_graph.png</span>
+                        <span class="output-item-desc">GradCAM activation intensity over time</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">summary.txt</span>
+                        <span class="output-item-desc">Text-based analysis summary with clinical recommendations</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-item-name">frame_classification.txt</span>
+                        <span class="output-item-desc">Detailed frame-by-frame classification report with risk assessment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="documentation-note">
+            <strong>System Overview</strong>
+            This clinical diagnostic system processes retinal fundus videos to detect disease indicators. The pipeline employs EfficientNetB0 deep learning model for frame classification, generates GradCAM heatmaps for explainability, and produces comprehensive clinical reports with actionable recommendations.
+        </div>
+
+    </div>
+</body>
+</html>
