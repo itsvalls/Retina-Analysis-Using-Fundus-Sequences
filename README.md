@@ -57,6 +57,7 @@ PyPDF2 & ReportLab – Report generation
 Pyttsx3 – Offline bilingual text-to-speech
 Googletrans – English to Hindi translation
 Pandas / NumPy – Data analysis and CSV handling
+
 ---
 ### Potential Applications
 
