@@ -1,6 +1,5 @@
 #  Automated Retinal Disease Detection using Deep Learning and Explainable AI  
-**Author:** Vallari Sharma  
-**Date:** July 2025  
+ 
 
 ---
 
@@ -12,7 +11,7 @@ It is designed as a clinical decision-support prototype that can assist ophthalm
 
 ---
 
-##  K<img width="1350" height="909" alt="Screenshot 2025-10-20 025457" src="https://github.com/user-attachments/assets/93b1eb34-c2de-4479-8c62-9264a6cfbd88" />
+##  <img width="1350" height="909" alt="Screenshot 2025-10-20 025457" src="https://github.com/user-attachments/assets/93b1eb34-c2de-4479-8c62-9264a6cfbd88" />
 
 
 <img width="1735" height="896" alt="Screenshot 2025-10-16 101531" src="https://github.com/user-attachments/assets/107fea2b-e346-46f1-80b7-8d74cd5f96cf" />
@@ -58,7 +57,7 @@ PyPDF2 & ReportLab – Report generation
 Pyttsx3 – Offline bilingual text-to-speech
 Googletrans – English to Hindi translation
 Pandas / NumPy – Data analysis and CSV handling
-
+---
 ### Potential Applications
 
 Early diabetic retinopathy screening in rural health camps
